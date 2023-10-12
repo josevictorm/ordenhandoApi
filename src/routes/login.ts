@@ -4,6 +4,10 @@ import { prisma } from '../lib/prisma'
 import { compareSync } from 'bcryptjs'
 
 export async function loginRoutes(app: FastifyInstance) {
+  app.get('/any', async (request) => {
+    return 'servidor carregando'
+  })
+
   app.post('/login', async (request, reply) => {
     const paramsSchema = z.object({
       email: z.string(),
