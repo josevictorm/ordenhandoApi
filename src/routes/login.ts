@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import bcrypt from 'bcryptjs'
+import { compareSync } from 'bcryptjs'
 
 export async function loginRoutes(app: FastifyInstance) {
   app.post('/login', async (request, reply) => {
@@ -18,7 +18,7 @@ export async function loginRoutes(app: FastifyInstance) {
       return reply.status(401).send('Email não cadastrado')
     }
 
-    const verifyPassword = bcrypt.compareSync(password, user.password)
+    const verifyPassword = compareSync(password, user.password)
 
     if (user && !verifyPassword) {
       return reply.status(401).send('Senha invalida')

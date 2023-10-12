@@ -59,7 +59,15 @@ export async function registerRoutes(app: FastifyInstance) {
       breedMom,
     } = paramsSchema.parse(request.body)
 
-    const decoded = app.jwt.decode(token)
+    interface DecodePayloadType {
+      sub: string
+    }
+    const decoded: DecodePayloadType | null = app.jwt.decode(token)
+
+    if (!decoded) {
+      return
+    }
+
     const userId = decoded.sub
 
     const user = await prisma.user.findUniqueOrThrow({
@@ -122,7 +130,15 @@ export async function registerRoutes(app: FastifyInstance) {
       milking: { firstMilking, secondMilking, thirdMilking },
     } = paramsSchema.parse(request.body)
 
-    const decoded = app.jwt.decode(token)
+    interface DecodePayloadType {
+      sub: string
+    }
+    const decoded: DecodePayloadType | null = app.jwt.decode(token)
+
+    if (!decoded) {
+      return
+    }
+
     const userId = decoded.sub
 
     const user = await prisma.user.findUniqueOrThrow({
@@ -208,7 +224,15 @@ export async function registerRoutes(app: FastifyInstance) {
       request.body,
     )
 
-    const decoded = app.jwt.decode(token)
+    interface DecodePayloadType {
+      sub: string
+    }
+    const decoded: DecodePayloadType | null = app.jwt.decode(token)
+
+    if (!decoded) {
+      return
+    }
+
     const userId = decoded.sub
 
     await prisma.user.findUniqueOrThrow({
@@ -241,7 +265,7 @@ export async function registerRoutes(app: FastifyInstance) {
     return result
   })
 
-  app.post('/sharedExpenses', async (request, reply) => {
+  app.post('/sharedExpenses', async (request) => {
     const paramsSchema = z.object({
       token: z.string(),
       category: z.string(),
@@ -264,7 +288,15 @@ export async function registerRoutes(app: FastifyInstance) {
       date,
     } = paramsSchema.parse(request.body)
 
-    const decoded = app.jwt.decode(token)
+    interface DecodePayloadType {
+      sub: string
+    }
+    const decoded: DecodePayloadType | null = app.jwt.decode(token)
+
+    if (!decoded) {
+      return
+    }
+
     const userId = decoded.sub
 
     const user = await prisma.user.findUniqueOrThrow({

@@ -11,7 +11,15 @@ export async function searchRoutes(app: FastifyInstance) {
 
     const [, token] = authorization.split(' ')
 
-    const decoded = app.jwt.decode(token)
+    interface DecodePayloadType {
+      sub: string
+    }
+    const decoded: DecodePayloadType | null = app.jwt.decode(token)
+
+    if (!decoded) {
+      return
+    }
+
     const userId = decoded.sub
 
     const cattle = await prisma.cattle.findMany({
@@ -42,7 +50,14 @@ export async function searchRoutes(app: FastifyInstance) {
 
     const [, token] = authorization.split(' ')
 
-    const decoded = app.jwt.decode(token)
+    interface DecodePayloadType {
+      sub: string
+    }
+    const decoded: DecodePayloadType | null = app.jwt.decode(token)
+
+    if (!decoded) {
+      return
+    }
 
     const userId = decoded.sub
 
