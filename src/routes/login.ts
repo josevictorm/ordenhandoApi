@@ -4,7 +4,7 @@ import { prisma } from '../lib/prisma'
 import { compareSync } from 'bcryptjs'
 
 export async function loginRoutes(app: FastifyInstance) {
-  app.get('/any', async (request) => {
+  app.get('/any', async () => {
     return 'servidor carregando'
   })
 
