@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  username String
+  farmSize Float?
+
+  Cattle         Cattle[]
+  Settings       Settings[]
+  SharedExpenses SharedExpenses[]
+}
+
+model Cattle {
+  id     String @id @default(uuid())
+  userId String
+
+  nickname       String
+  breed          String
+  registerNumber Int
+  gender         String
+  birthDate      DateTime
+  animalClass    String
+  breedFather    String
+  breedMom       String
+  createdAt      DateTime @default(now())
+
+  Production       Production[]
+  PersonalExpenses PersonalExpenses[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Settings {
+  id     String @id @default(uuid())
+  userId String
+
+  breedTypes     String
+  MonthMilkPrice Float
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Production {
+  id       String @id @default(uuid())
+  cattleId String
+
+  productionDate DateTime
+  firstMilking   Float?
+  secondMilking  Float?
+  thirdMilking   Float?
+
+  Cattle Cattle? @relation(fields: [cattleId], references: [id])
+}
+
+model SharedExpenses {
+  id     String @id @default(uuid())
+  userId String
+
+  category        String
+  productName     String
+  unitPrice       Float
+  measurementType String
+  quantity        Float
+  totalValue      Float
+  date            DateTime
+
+  User User? @relation(fields: [userId], references: [id])
+}
+
+model PersonalExpenses {
+  id       String @id @default(uuid())
+  cattleId String
+
+  nickname    String
+  productName String
+  price       Float
+  date        DateTime
+
+  Cattle Cattle? @relation(fields: [cattleId], references: [id])
+}
